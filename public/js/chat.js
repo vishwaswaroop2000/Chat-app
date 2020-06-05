@@ -2,6 +2,7 @@ const socket = io()
 const $messages = document.querySelector('#messages')
 //Elements
 $('#message-form').submit(() => {
+  //On sending a message the send button would be disabled until the message is actually sent
   event.preventDefault()
   const message = event.target.elements.message.value
   $('button').attr('disabled', 'disabled')
@@ -73,6 +74,7 @@ socket.on('roomData', ({
   $('#sidebar').empty()
   $('#sidebar').append(html)
 })
+
 $('#send-location').click(() => {
   if (!navigator.geolocation)
     return alert('Geolocation is not supported by your browser.')

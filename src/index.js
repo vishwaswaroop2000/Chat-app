@@ -15,11 +15,9 @@ const {
 } = require('./utils//users')
 
 const app = express()
-//'create a new server' with the 'express app'slication
+//'create a new server' with the express application
 const server = http.createServer(app)
 const io = socketio(server) // create a socket io server by passing a raw http server.
-//This express does not allow us the access of the raw htttp server thats why refactoring is done here
-
 const port = process.env.PORT || 3000
 
 const publicDirectory = path.join(__dirname, '../public')
@@ -30,7 +28,6 @@ app.use(express.static(publicDirectory))
 let count = 0
 
 io.on('connection', (socket) => {
-  console.log("New web socket connection")
 
   socket.on('join', (options, callback) => {
     const {
@@ -46,7 +43,8 @@ io.on('connection', (socket) => {
     }
 
 
-    socket.join(user.room) //Makes the socket get a room through which it can get functions
+    socket.join(user.room) //Makes the socket get a room through which it can interact with other other sockets
+    //in the same room
     socket.emit('message', generateMessage('Admin', 'Welcome!'))
     socket.broadcast.to(user.room).emit('message', generateMessage(`${user.username} has joined!`))
     io.to(user.room).emit('roomData', {
